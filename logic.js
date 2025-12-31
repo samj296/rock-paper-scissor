@@ -4,27 +4,33 @@ function createGame(){
         "computerChoice": "",
         "userChoice": "",
         "win" : 0, 
-        "loose": 0,
+        "lose": 0,
         "draw": 0
     }
+    compChoice(game);
+    return game;
+}
+
+function compChoice(game){
     let compChoice = Math.floor((Math.random()* 3) + 1 )
     switch(compChoice){
         case 1:
-            game["computerChoice"] = "Rock";
+            game.computerChoice = "Rock";
              break;
         case 2:
-            game["computerChoice"] = "Paper";
+            game.computerChoice = "Paper";
             break;
         case 3:
-            game["computerChoice"] = "Scissor";
+            game.computerChoice = "Scissor";
             break;
     }
 
     return game;
 }
 
-function gameLogic(input, compChoice, game){
-    const result = {}
+function gameLogic(game){
+    const input = game.userChoice
+    const compChoice = game.computerChoice
         if (input === compChoice){
             game.draw++
             return "Draw";
@@ -35,9 +41,9 @@ function gameLogic(input, compChoice, game){
                 game.win++
             return "User win"
         }else {
-            game.loose++
+            game.lose++
             return "Computer win"
         }
 }
 
-module.exports = {createGame, gameLogic};
+module.exports = {createGame, gameLogic, compChoice};

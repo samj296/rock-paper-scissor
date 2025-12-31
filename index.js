@@ -1,5 +1,5 @@
 const express = require("express");
-const {createGame, gameLogic} = require("./logic")
+const {createGame, gameLogic, compChoice} = require("./logic")
 
 const app = express();
 app.use(express.json());
@@ -16,14 +16,20 @@ app.get("/api/game",(req,res) =>{
 
 app.post("/api/game/play",(req,res) => {
     const {choice} = req.body;
-    result = gameLogic(choice,game.computerChoice,game)
+    const valid = ["Rock", "Paper", "Scissor"]
+    if(!choice || !valid.includes(choice)){
+        return res.status(400).json({error: "Valid choice is required ('Rock', 'Paper', 'Scissor')"})
+    }else{
+        game.userChoice = choice
+    }
+    result = gameLogic(game)
     res.json({
-        user: choice,
+        user: game.userChoice,
         computer: game.computerChoice,
         result: result,
         win: game.win,
-        lost: game.loose,
+        lost: game.lose,
         draw: game.draw
     })
-    game = createGame();
+    compChoice(game)
 })
